@@ -18,7 +18,7 @@ def add_likelihood(token: str, likelihood: dict, unmask=1, mask=0) -> float:
     if token == SPECIAL_TOKENS["PAD"]:
         return mask
     else:
-        return likelihood.get(unmask + likelihood[token], mask)
+        return likelihood.get(unmask + likelihood[token], unmask)
 
 
 def add_with_thresholding(token: str, likelihood: dict, unmask=1, mask=0) -> float:
