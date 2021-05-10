@@ -8,24 +8,21 @@ from data import get_primary_data
 
 
 
-def calcualte_model_io(apply_likelihood: bool, formula_name: str) -> tuple:
+def calcualte_model_io(apply_likelihood: bool, formula_name: str, max_len: int, n_classes: int) -> tuple:
     # one-hot encoder for representing the labels
     one_hot_encoding = lambda labels, num_classes: np.squeeze(np.eye(num_classes)[labels.reshape(-1)])
 
-    # store number of classes
-    n_classes = len(list(TARGET_MAP.keys()))
-
     train, test = get_primary_data()
 
-    Xtrain = _encode_data(train[TEXT].tolist(), apply_likelihood, formula_name)
-    Xtest  = _encode_data(test[TEXT].tolist(), apply_likelihood, formula_name)
+    Xtrain = _encode_data(train[TEXT].tolist(), apply_likelihood, formula_name, max_len)
+    Xtest  = _encode_data(test[TEXT].tolist(), apply_likelihood, formula_name, max_len)
     Ytrain = one_hot_encoding(train[LABEL].to_numpy(), num_classes=n_classes)
     Ytest  = one_hot_encoding(test[LABEL].to_numpy(), num_classes=n_classes)
 
     return Xtrain, Ytrain, Xtest, Ytest
 
 
-def _encode_data(texts: list, apply_likelihood: bool, formula_name: str, max_len=64) -> np.array:
+def _encode_data(texts: list, apply_likelihood: bool, formula_name: str, max_len: int) -> np.array:
     tokenizer = AutoTokenizer.from_pretrained(BERT_NAME)
     likelihood_calculator = LikelihoodCalculator(tokenizer, formula_name)
 
@@ -54,8 +51,3 @@ def _encode_data(texts: list, apply_likelihood: bool, formula_name: str, max_len
         data.append([input_ids, attention_mask, token_type_ids])
        
     return np.asarray(data)
-
-
-Xtrain, Ytrain, Xtest, Ytest = calcualte_model_io(apply_likelihood=True, formula_name="add_likelihood")
-
-print(Xtrain.shape, Ytrain.shape, Xtest.shape, Ytest.shape)
