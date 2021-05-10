@@ -18,6 +18,8 @@ def get_args() -> dict:
     
     # Common parameters between models
     parser.add_argument("-bt", "--bert-trainable", type=bool, required=True)
+    parser.add_argument("-lg", "--logits", type=bool, required=False, default=True)
+    parser.add_argument("-avg", "--average", type=str, required=False, default="macro")
 
     # NULI parameters
     parser.add_argument("-nd", "--nuli-dropout", type=float, required=False, default=0.3)

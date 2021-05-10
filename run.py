@@ -51,7 +51,9 @@ if __name__ == "__main__":
         model = kusail(bert_trainable, num_filters=nf, filter_sizes=fs, dropout_rate=ksd)
     else:
         raise TypeError(f"The {model_name} does not exit in implemention.")
-
+    
+    model = compile_model(model, learning_rate=args["learning_rate"], logits=True, f1_average="macro")
+    
     # train the model
     Xtrain = [Xtrain[:, 0, :], Xtrain[:, 1, :], Xtrain[:, 2, :]]
     Xtest  = [Xtest[:, 0, :], Xtest[:, 1, :], Xtest[:, 2, :]]
