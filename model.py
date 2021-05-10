@@ -21,8 +21,8 @@ def bert(max_len: int, is_trainable: bool) -> tuple:
     transformer = TFAutoModel.from_pretrained(BERT_NAME, trainable=is_trainable)
 
     input_ids      = Input(shape=(max_len,), dtype=tf.int32, name="input_ids")
-    attention_mask = Input(shape=(max_len,), dtype=tf.float32, name="input_ids")
-    token_type_ids = Input(shape=(max_len,), dtype=tf.int32, name="input_ids")
+    attention_mask = Input(shape=(max_len,), dtype=tf.float32, name="attention_mask")
+    token_type_ids = Input(shape=(max_len,), dtype=tf.int32, name="token_type_ids")
 
     input_layer     = [input_ids, attention_mask, token_type_ids]
     embedding_layer = transformer(input_layer)[0]
